@@ -1,4 +1,8 @@
 {
    "baseUrl":"http://localhost:3000/",
-   "integrationFolder": "cypress/JuiceShopTests"
+   "integrationFolder": "cypress/JuiceShopTests",
+   "fixturesFolder": "fixtures",
+   "pluginsFile": "plugins",
+   "screenshotsFolder": "screenshots",
+   "supportFile": "support"
 }
