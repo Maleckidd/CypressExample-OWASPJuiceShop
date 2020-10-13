@@ -1,0 +1,21 @@
+{
+  "name": "juiceshoptestautomation_cypress",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "cypress:open": "cypress open --env JuiceShop_ENV=stag",
+    "cypress:headless": "cypress run --headless --browser chrome --env JuiceShop_ENV=stag",
+    "cypress:open:dev": "cypress open --env JuiceShop_ENV=dev",
+    "cypress:open:stag": "cypress open --env JuiceShop_ENV=stag"
+  },
+  "repository": {
+    "type":"git",
+    "url": "https://github.com/Maleckidd/CypressExample-OWASPJuiceShop"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cypress": "^5.3.0"
+  }
+}

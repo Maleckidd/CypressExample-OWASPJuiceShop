@@ -1,0 +1,10 @@
+{
+    "cookieToast": {
+        "messageCookies": "This website uses fruit cookies to ensure you get the juiciest tracking experience. But me wait!",
+        "linkCookies": "https://www.youtube.com/watch?v=9PnbKL3wuH4",
+        "buttonText": "Me want it!"
+    },
+    "welcomePopup": {
+        "dismissButtonText":" visibility_off Dismiss"
+    }
+}
