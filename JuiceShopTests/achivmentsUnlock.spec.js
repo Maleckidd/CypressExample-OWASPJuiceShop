@@ -15,7 +15,7 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
       scoreBoard.checkIsAchivSolvedXHR('Score Board')
     })
 
-    it.only('2 - Bonus Payload', () => {
+    it('2 - Bonus Payload', () => {
       cy.visit('/')
       cy.fixture('challengesPayloads.json').then(data => {
       headerBar.useSearchingTool(data.BonusPayload);
