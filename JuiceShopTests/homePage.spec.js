@@ -1,4 +1,4 @@
-import firstVisitPopups from '../POM/HomePage/FirstVisitPopups.pom';
+import firstVisitPopups from '../POM/FirstVisitPopups.pom';
 
 describe('HomePage Test Automatisation demo', () => {
 
