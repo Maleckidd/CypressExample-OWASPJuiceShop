@@ -4,3 +4,4 @@ node_modules/*
 cypress
 screenshots
 debug_log
+debug.log

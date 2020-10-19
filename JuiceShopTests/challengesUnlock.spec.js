@@ -65,7 +65,7 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
       scoreBoard.checkIsAchivSolvedXHR('Privacy Policy')
     })
 
-    it.only("10 - Privacy Policy", () => {
+    it("10 - Privacy Policy", () => {
       registrationPage.register();
     })
   })
