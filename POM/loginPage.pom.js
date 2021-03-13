@@ -4,7 +4,7 @@ const loginPage = {
    emailInputSelector: '[id="email"]',
    passwordInputSelector: '[id="password"]',
    loginButtonSelector: '[id="loginButton"]',
-   registrationLinkSelector: '[id="newCustomerLink"]',
+   registrationLinkSelector: '[id="newCustomerLink"] > a',
 
    registrationLink(){
       return cy.get(this.registrationLinkSelector)

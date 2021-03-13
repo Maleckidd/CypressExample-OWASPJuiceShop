@@ -35,6 +35,7 @@ const firstVisitPopups = {
    closeFirstVisitMesseges(){
       this.cookiesConfirmButton().click();
       this.welcomeDialogDismissButton().click();
+      cy.wait(2000);
    }
 }
 export default {...firstVisitPopups }

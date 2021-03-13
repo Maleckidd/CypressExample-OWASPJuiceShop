@@ -10,12 +10,15 @@
     "cypress:open:stag": "cypress open --env JuiceShop_ENV=stag"
   },
   "repository": {
-    "type":"git",
+    "type": "git",
     "url": "https://github.com/Maleckidd/CypressExample-OWASPJuiceShop"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "cypress": "^5.3.0"
+  },
+  "devDependencies": {
+    "faker": "^5.4.0"
   }
 }

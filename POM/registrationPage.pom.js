@@ -1,52 +1,68 @@
 import headerBar from './headerBar.pom';
 import loginPage from './loginPage.pom';
 
+const faker = require('faker');
+
 const registrationPage = {
    emailInputSelector: '[id="emailControl"]',
    passwordInputSelector: '[id="passwordControl"]',
    repasswordInputSelector: '[id="repeatPasswordControl"]',
    passwordAdviceSelector: '[class="mat-slide-toggle-bar"]',
-   secQuestionSelectSelector: '[id="mat-select-2"]',
+   secQuestionInputSelector: '[id="mat-select-2',
+   secQuestionSelectElementsSelector: 'mat-option[class*="mat-option"]',
    answerInputSelector: '[id="securityAnswerControl"]',
    registerButtonSelector: '[id="registerButton"]',
    loginLinkSelector: '[id="alreadyACustomerLink"]',
+   userEmail: faker.internet.email(),
+   userPassword: 'superSecret99.',
 
    emailInput(){
-      return cy.get(emailInputSelector)
+      return cy.get(this.emailInputSelector)
    },
 
    passwordInput(){
-      return cy.get(passwordInputSelector)
+      return cy.get(this.passwordInputSelector)
    },
 
    repasswordInput(){
-      return cy.get(repasswordInputSelector)
+      return cy.get(this.repasswordInputSelector)
    },
 
-   passwordAdvice(){
-      return cy.get(passwordAdviceSelector)
+   passwordAdviceInput(){
+      return cy.get(this.passwordAdviceSelector)
    },
 
-   secQuestionSelect(){
-      return cy.get(secQuestionSelectSelector)
+   secQuestionInput(){
+      return cy.get(this.secQuestionInputSelector)
+   },
+
+   secQuestionElementsSelect(){
+      return cy.get(this.secQuestionSelectElementsSelector)
    },
 
    answerInput(){
-      return cy.get(answerInputSelector)
+      return cy.get(this.answerInputSelector)
    },
 
    registerButton(){
-      return cy.get(registerButtonSelector)
+      return cy.get(this.registerButtonSelector)
    },
 
    loginLink(){
-      return cy.get(loginLinkSelector)
+      return cy.get(this.loginLinkSelector)
    },
 
    register(){
       headerBar.accountButton().click();
       headerBar.loginButton().click();
       loginPage.registrationLink().click();
+      this.emailInput().type(this.userEmail);
+      this.passwordInput().type(this.userPassword);
+      this.repasswordInput().type(this.userPassword);
+      this.secQuestionInput().click();
+      this.secQuestionElementsSelect().contains('What\'s your favorite place to go hiking?').click();
+      this.answerInput().type(faker.address.country());
+      this.registerButton().click();
    }
 }
 export default {...registrationPage }
