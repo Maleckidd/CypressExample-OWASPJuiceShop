@@ -1,15 +1,25 @@
 import firstVisitPopups from '../POM/FirstVisitPopups.pom';
 import headerBar from '../POM/headerBar.pom';
+import sideNav from '../POM/sideNav.pom';
 import loginPage from '../POM/loginPage.pom';
 import scoreBoard from '../POM/ScoreBoard.pom';
 import registrationPage from '../POM/registrationPage.pom';
+import contactPage from '../POM/contactPage.pom';
 
 describe('OWASP JuiceShop Achivments unlocking Automation', () => {
   context('1 - star vulnerabilities', () => {
 
-    beforeEach(() => {
+    before(() => {
       cy.visit('/');
+      cy.wait(2000);
       firstVisitPopups.closeFirstVisitMesseges();
+      registrationPage.register();
+      loginPage.login(registrationPage.userEmail, registrationPage.userPassword);
+    });
+
+    beforeEach(() => {
+      Cypress.Cookies.preserveOnce('cookieconsent_status', 'welcomebanner_status', 'token', 'language');
+      cy.visit('/');
     });
 
     it('1 - visit /#/score-board', () => {
@@ -18,16 +28,14 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
     });
 
     it('2 - Bonus Payload', () => {
-      cy.visit('/');
       cy.fixture('challengesPayloads.json').then(data => {
         headerBar.useSearchingTool(data.BonusPayload);
       });
       scoreBoard.checkIsAchivSolvedXHR('Bonus Payload');
     });
 
-    it.skip('3 - DOM XSS', () => {
+    it('3 - DOM XSS', () => {
       //Challenge solved - timeout - alert (to fix)
-      cy.visit('/');
       cy.fixture('challengesPayloads.json').then(data => {
         headerBar.useSearchingTool(data.DOMBasedXSS);
       });
@@ -39,7 +47,6 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
     });
 
     it("5 - Error Handling", () => {
-      cy.visit('/');
       loginPage.login('\'', 'asd');
       scoreBoard.checkIsAchivSolvedXHR('Error Handling');
     });
@@ -61,8 +68,26 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
     });
 
     it("9 - Privacy Policy", () => {
-      cy.visit('/#/privacy-security/privacy-policy');;
+      cy.visit('/#/privacy-security/privacy-policy');
       scoreBoard.checkIsAchivSolvedXHR('Privacy Policy');
+    });
+
+    it("10 - Zero Stars", () => {
+     cy.intercept('captcha/').as('captcha');
+     sideNav.navigateToCustomerFeedback();
+     cy.wait('@captcha').then((captcha) => {
+      cy.request({
+        method: 'POST', 
+        url: 'http://localhost:3000/api/Feedbacks/', 
+        body: {
+          captchaId: captcha.response.body.captchaId,
+          captcha: `${captcha.response.body.answer}`,
+          comment: "rte (anonymous)",
+          rating: 0
+        }
+      });
+     });
+     scoreBoard.checkIsAchivSolvedXHR('Zero Stars');
     });
 
   });

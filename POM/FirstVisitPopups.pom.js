@@ -33,9 +33,12 @@ const firstVisitPopups = {
    },
 
    closeFirstVisitMesseges(){
-      this.cookiesConfirmButton().click();
-      this.welcomeDialogDismissButton().click();
-      cy.wait(2000);
+      cy.get('body').then(($body) => {
+         if ($body.find(this.welcomeDialogDismissButtonSelector).length > 0) {
+            this.cookiesConfirmButton().click();
+            this.welcomeDialogDismissButton().click();
+         }
+      });
    }
 }
 export default {...firstVisitPopups }
