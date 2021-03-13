@@ -6,15 +6,10 @@ import registrationPage from '../POM/registrationPage.pom';
 
 describe('OWASP JuiceShop Achivments unlocking Automation', () => {
   context('1 - star vulnerabilities', () => {
-    before(() => {
-      cy.visit('');
-      firstVisitPopups.closeFirstVisitMesseges();
-      registrationPage.register();
-      loginPage.login(registrationPage.userEmail, registrationPage.userPassword);
-    });
 
     beforeEach(() => {
-      cy.visit('');
+      cy.visit('/');
+      firstVisitPopups.closeFirstVisitMesseges();
     });
 
     it('1 - visit /#/score-board', () => {
@@ -70,8 +65,5 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
       scoreBoard.checkIsAchivSolvedXHR('Privacy Policy');
     });
 
-    it.only("10 - Privacy Policy", () => {
-      
-    });
   });
 });
