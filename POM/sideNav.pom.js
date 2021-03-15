@@ -13,7 +13,7 @@ const sideNav = {
    },
 
    navigateToCustomerFeedback(){
-      headerBar.openSideNavButton().click();
+      headerBar.sideNavButton().click();
       this.customerFeedbackButton().click();
    }
 }

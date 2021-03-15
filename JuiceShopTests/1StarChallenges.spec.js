@@ -38,7 +38,7 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
       //Other solution
       //cy.visit("http://localhost:3000/#/search?q=%3Ciframe%20src%3D%22javascript:alert(%60xss%60)%22%3E")
       cy.fixture('challengesPayloads.json').then(data => {
-        headerBar.useSearchingTool(data.DOMBasedXSS);
+        headerBar.useSearchingTool(data.XSS);
       });
       scoreBoard.checkIsAchivSolvedXHR('DOM XSS');
     });
@@ -110,7 +110,7 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
     it("12 - Bully Chatbot", () => {
       registrationPage.register();
       loginPage.login(registrationPage.userEmail, registrationPage.userPassword);
-      headerBar.openSideNavButton().click();
+      headerBar.sideNavButton().click();
       sideNav.supportChatButton().click();
       for (let i = 0; i < 30; i++) {
         cy.get("#message-input").type('code{enter}');

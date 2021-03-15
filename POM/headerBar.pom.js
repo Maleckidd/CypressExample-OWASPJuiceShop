@@ -4,6 +4,7 @@ const headerBar = {
    accountButtonSelector: '[id="navbarAccount"]',
    loginButtonSelector: '[id="navbarLoginButton"]',
    sideNavButtonSelector: '[aria-label="Open Sidenav"]',
+   basketButtonSelector: '[routerlink="/basket"]',
 
    accountButton(){
       return cy.get(this.accountButtonSelector)
@@ -21,8 +22,12 @@ const headerBar = {
       return cy.get(this.serachingInputSelector)
    },
 
-   openSideNavButton(){
+   sideNavButton(){
       return cy.get(this.sideNavButtonSelector)
+   },
+
+   basketButon(){
+      return cy.get(this.basketButtonSelector)
    },
 
    useSearchingTool(input){
