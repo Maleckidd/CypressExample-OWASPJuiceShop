@@ -1,10 +1,11 @@
+import faker from 'faker';
+
 import firstVisitPopups from '../POM/FirstVisitPopups.pom';
 import headerBar from '../POM/headerBar.pom';
 import sideNav from '../POM/sideNav.pom';
 import loginPage from '../POM/loginPage.pom';
 import scoreBoard from '../POM/ScoreBoard.pom';
 import registrationPage from '../POM/registrationPage.pom';
-import contactPage from '../POM/contactPage.pom';
 
 describe('OWASP JuiceShop Achivments unlocking Automation', () => {
   context('1 - star vulnerabilities', () => {
@@ -13,12 +14,10 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
       cy.visit('/');
       cy.wait(2000);
       firstVisitPopups.closeFirstVisitMesseges();
-      registrationPage.register();
-      loginPage.login(registrationPage.userEmail, registrationPage.userPassword);
     });
 
     beforeEach(() => {
-      Cypress.Cookies.preserveOnce('cookieconsent_status', 'welcomebanner_status', 'token', 'language');
+      Cypress.Cookies.preserveOnce('cookieconsent_status', 'welcomebanner_status', 'language');
       cy.visit('/');
     });
 
@@ -34,11 +33,14 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
       scoreBoard.checkIsAchivSolvedXHR('Bonus Payload');
     });
 
-    it('3 - DOM XSS', () => {
-      //Challenge solved - timeout - alert (to fix)
+    it.skip('3 - DOM XSS', () => {
+      //Challenge solved - timeout - alert popup not possible to close
+      //Other solution
+      //cy.visit("http://localhost:3000/#/search?q=%3Ciframe%20src%3D%22javascript:alert(%60xss%60)%22%3E")
       cy.fixture('challengesPayloads.json').then(data => {
         headerBar.useSearchingTool(data.DOMBasedXSS);
       });
+      scoreBoard.checkIsAchivSolvedXHR('DOM XSS');
     });
 
     it("4 - Confidential Document", () => {
@@ -73,22 +75,47 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
     });
 
     it("10 - Zero Stars", () => {
-     cy.intercept('captcha/').as('captcha');
-     sideNav.navigateToCustomerFeedback();
-     cy.wait('@captcha').then((captcha) => {
-      cy.request({
-        method: 'POST', 
-        url: 'http://localhost:3000/api/Feedbacks/', 
-        body: {
-          captchaId: captcha.response.body.captchaId,
-          captcha: `${captcha.response.body.answer}`,
-          comment: "rte (anonymous)",
-          rating: 0
-        }
+      cy.intercept('captcha/').as('captcha');
+      sideNav.navigateToCustomerFeedback();
+      cy.wait('@captcha').then((captcha) => {
+        cy.request({
+          method: 'POST',
+          url: 'http://localhost:3000/api/Feedbacks/',
+          body: {
+            captchaId: captcha.response.body.captchaId,
+            captcha: `${captcha.response.body.answer}`,
+            comment: "rte (anonymous)",
+            rating: 0
+          }
+        });
       });
-     });
-     scoreBoard.checkIsAchivSolvedXHR('Zero Stars');
+      scoreBoard.checkIsAchivSolvedXHR('Zero Stars');
     });
 
+    it("11 - Repetitive Registration", () => {
+      headerBar.accountButton().click();
+      headerBar.loginButton().click();
+      loginPage.registrationLink().click();
+      registrationPage.emailInput().type(faker.internet.email);
+      registrationPage.passwordInput().type(registrationPage.userPassword);
+      registrationPage.repasswordInput().type(registrationPage.userPassword);
+      registrationPage.passwordInput().type(`x`);
+      registrationPage.secQuestionInput().click();
+      registrationPage.secQuestionElementsSelect().contains('What\'s your favorite place to go hiking?').click();
+      registrationPage.answerInput().type(faker.address.country());
+      registrationPage.registerButton().click();
+      scoreBoard.checkIsAchivSolvedXHR('Repetitive Registration');
+    });
+
+    it("12 - Bully Chatbot", () => {
+      registrationPage.register();
+      loginPage.login(registrationPage.userEmail, registrationPage.userPassword);
+      headerBar.openSideNavButton().click();
+      sideNav.supportChatButton().click();
+      for (let i = 0; i < 30; i++) {
+        cy.get("#message-input").type('code{enter}');
+      };
+      scoreBoard.checkIsAchivSolvedXHR('Bully Chatbot');
+    });
   });
 });
