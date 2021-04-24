@@ -92,11 +92,11 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
       scoreBoard.checkIsAchivSolvedXHR('Zero Stars');
     });
 
-    it("11 - Repetitive Registration", () => {
+    it.only("11 - Repetitive Registration", () => {
       headerBar.accountButton().click();
       headerBar.loginButton().click();
       loginPage.registrationLink().click();
-      registrationPage.emailInput().type(faker.internet.email);
+      registrationPage.emailInput().type(faker.internet.email());
       registrationPage.passwordInput().type(registrationPage.userPassword);
       registrationPage.repasswordInput().type(registrationPage.userPassword);
       registrationPage.passwordInput().type(`x`);
