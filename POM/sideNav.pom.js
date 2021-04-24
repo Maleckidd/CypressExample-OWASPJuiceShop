@@ -3,6 +3,7 @@ import headerBar from '../POM/headerBar.pom';
 const sideNav = {
    customerFeedbackButtonSelector: 'a[routerlink="/contact"]',
    supportChatButtonSelector: 'a[routerlink="/chatbot"]',
+   complaintButtonSelector: 'a[routerlink="/complain"]',
 
    customerFeedbackButton(){
       return cy.get(this.customerFeedbackButtonSelector)
@@ -10,6 +11,15 @@ const sideNav = {
 
    supportChatButton(){
       return cy.get(this.supportChatButtonSelector)
+   },
+
+   complaintButton(){
+      return cy.get(this.complaintButtonSelector)
+   },
+
+   navigateToComplaint(){
+      headerBar.sideNavButton().click();
+      this.complaintButton().click();   
    },
 
    navigateToCustomerFeedback(){

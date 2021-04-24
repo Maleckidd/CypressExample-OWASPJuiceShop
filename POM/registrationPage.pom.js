@@ -8,7 +8,7 @@ const registrationPage = {
    passwordInputSelector: '[id="passwordControl"]',
    repasswordInputSelector: '[id="repeatPasswordControl"]',
    passwordAdviceSelector: '[class="mat-slide-toggle-bar"]',
-   secQuestionInputSelector: '[id="mat-select-2',
+   secQuestionArrowSelector: '[class*="mat-select-arrow-wrapper"]',
    secQuestionSelectElementsSelector: 'mat-option[class*="mat-option"]',
    answerInputSelector: '[id="securityAnswerControl"]',
    registerButtonSelector: '[id="registerButton"]',
@@ -33,7 +33,7 @@ const registrationPage = {
    },
 
    secQuestionInput(){
-      return cy.get(this.secQuestionInputSelector)
+      return cy.get(this.secQuestionArrowSelector)
    },
 
    secQuestionElementsSelect(){
