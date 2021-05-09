@@ -25,13 +25,12 @@
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
 import 'cypress-file-upload';
-import scoreBoard from '../POM/ScoreBoard.pom';
 
 Cypress.Commands.add('checkIsAchivSolvedXHR', (challengeName) => {
   cy.visit('/');
   cy.server();
   cy.route({ url: '/api/Challenges/?sort=name', method: 'GET' }).as('getChallenges');
-  cy.visit(scoreBoard.url);
+  cy.visit('/#/score-board');
   cy.wait('@getChallenges').then(xhr => {
     const challanges = xhr.response.body.data;
     let obj = challanges.find(o => o.name === challengeName);

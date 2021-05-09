@@ -4,7 +4,6 @@ import firstVisitPopups from '../POM/FirstVisitPopups.pom';
 import headerBar from '../POM/headerBar.pom';
 import sideNav from '../POM/sideNav.pom';
 import loginPage from '../POM/loginPage.pom';
-import scoreBoard from '../POM/ScoreBoard.pom';
 import registrationPage from '../POM/registrationPage.pom';
 
 describe('OWASP JuiceShop Achivments unlocking Automation', () => {
@@ -21,7 +20,7 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
     });
 
     it('1 - visit /#/score-board', () => {
-      cy.visit(scoreBoard.url);
+      cy.visit('/#/score-board');
       cy.checkIsAchivSolvedXHR('Score Board');
     });
 
