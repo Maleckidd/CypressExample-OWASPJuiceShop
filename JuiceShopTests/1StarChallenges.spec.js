@@ -22,14 +22,14 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
 
     it('1 - visit /#/score-board', () => {
       cy.visit(scoreBoard.url);
-      scoreBoard.checkIsAchivSolvedXHR('Score Board');
+      cy.checkIsAchivSolvedXHR('Score Board');
     });
 
     it('2 - Bonus Payload', () => {
       cy.fixture('challengesPayloads.json').then(data => {
         headerBar.useSearchingTool(data.BonusPayload);
       });
-      scoreBoard.checkIsAchivSolvedXHR('Bonus Payload');
+      cy.checkIsAchivSolvedXHR('Bonus Payload');
     });
 
     it.skip('3 - DOM XSS', () => {
@@ -37,38 +37,38 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
       cy.fixture('challengesPayloads.json').then(data => {
         headerBar.useSearchingTool(data.XSS);
       });
-      scoreBoard.checkIsAchivSolvedXHR('DOM XSS');
+      cy.checkIsAchivSolvedXHR('DOM XSS');
     });
 
     it("4 - Confidential Document", () => {
       cy.request('/ftp/acquisitions.md');
-      scoreBoard.checkIsAchivSolvedXHR('Confidential Document');
+      cy.checkIsAchivSolvedXHR('Confidential Document');
     });
 
     it("5 - Error Handling", () => {
       loginPage.login('\'', 'asd');
-      scoreBoard.checkIsAchivSolvedXHR('Error Handling');
+      cy.checkIsAchivSolvedXHR('Error Handling');
     });
 
     it("6 - Missing Encoding", () => {
       cy.request('/assets/public/images/uploads/%F0%9F%98%BC-%23zatschi-%23whoneedsfourlegs-1572600969477.jpg');
       cy.visit('/');
-      scoreBoard.checkIsAchivSolvedXHR('Missing Encoding');
+      cy.checkIsAchivSolvedXHR('Missing Encoding');
     });
 
     it("7 - Exposed Metrics", () => {
       cy.request('/metrics');
-      scoreBoard.checkIsAchivSolvedXHR('Exposed Metrics');
+      cy.checkIsAchivSolvedXHR('Exposed Metrics');
     });
 
     it("8 - Outdated Whitelist", () => {
       cy.request('/redirect?to=https://blockchain.info/address/1AbKfgvw9psQ41NbLi8kufDQTezwG8DRZm');
-      scoreBoard.checkIsAchivSolvedXHR('Outdated Whitelist');
+      cy.checkIsAchivSolvedXHR('Outdated Whitelist');
     });
 
     it("9 - Privacy Policy", () => {
       cy.visit('/#/privacy-security/privacy-policy');
-      scoreBoard.checkIsAchivSolvedXHR('Privacy Policy');
+      cy.checkIsAchivSolvedXHR('Privacy Policy');
     });
 
     it("10 - Zero Stars", () => {
@@ -86,7 +86,7 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
           }
         });
       });
-      scoreBoard.checkIsAchivSolvedXHR('Zero Stars');
+      cy.checkIsAchivSolvedXHR('Zero Stars');
     });
 
     it("11 - Repetitive Registration", () => {
@@ -101,7 +101,7 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
       registrationPage.secQuestionElementsSelect().contains('What\'s your favorite place to go hiking?').click();
       registrationPage.answerInput().type(faker.address.country());
       registrationPage.registerButton().click();
-      scoreBoard.checkIsAchivSolvedXHR('Repetitive Registration');
+      cy.checkIsAchivSolvedXHR('Repetitive Registration');
     });
 
     it("12 - Bully Chatbot", () => {
@@ -112,7 +112,7 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
       for (let i = 0; i < 30; i++) {
         cy.get("#message-input").type('code{enter}');
       };
-      scoreBoard.checkIsAchivSolvedXHR('Bully Chatbot');
+      cy.checkIsAchivSolvedXHR('Bully Chatbot');
     });
   });
 });

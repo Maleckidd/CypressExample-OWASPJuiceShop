@@ -1,7 +1,6 @@
 import firstVisitPopups from '../POM/FirstVisitPopups.pom';
 import headerBar from '../POM/headerBar.pom';
 import loginPage from '../POM/loginPage.pom';
-import scoreBoard from '../POM/ScoreBoard.pom';
 import resetPassword from '../POM/resetPassword.pom';
 import registrationPage from '../POM/registrationPage.pom';
 import sideNav from '../POM/sideNav.pom';
@@ -22,13 +21,13 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
 
     it('1 - Login Admin', () => {
       loginPage.login("' OR '1'='1'--", " ");
-      scoreBoard.checkIsAchivSolvedXHR('Login Admin');
+      cy.checkIsAchivSolvedXHR('Login Admin');
     });
 
     it('2 - Admin Section', () => {
       //path found in main-es2018.js file
       cy.visit('/#/administration');
-      scoreBoard.checkIsAchivSolvedXHR('Admin Section');
+      cy.checkIsAchivSolvedXHR('Admin Section');
     });
 
     it('3 - View Basket', () => {
@@ -39,7 +38,7 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
           storage.bid = 2;
         });
       cy.reload();
-      scoreBoard.checkIsAchivSolvedXHR('View Basket');
+      cy.checkIsAchivSolvedXHR('View Basket');
     });
 
     it('4 - Get rid of all 5-star customer feedback', () => {
@@ -52,7 +51,7 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
           customerFeedback.find("button").click();
         }
       });
-      scoreBoard.checkIsAchivSolvedXHR('Five-Star Feedback');
+      cy.checkIsAchivSolvedXHR('Five-Star Feedback');
     });
 
     it('5 - Meta Geo Stalking', () => {
@@ -61,7 +60,7 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
       const securityAnswer = 'Daniel Boone National Forest';
       const johnEmail = 'john@juice-sh.op';
       resetPassword.resetPassword(johnEmail, newPassword, securityAnswer)
-      scoreBoard.checkIsAchivSolvedXHR('Meta Geo Stalking');
+      cy.checkIsAchivSolvedXHR('Meta Geo Stalking');
     });
 
     it('6 -  Deprecated Interface', () => {
@@ -70,26 +69,26 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
       loginPage.login(registrationPage.userEmail, registrationPage.userPassword);
       sideNav.navigateToComplaint();
       complaint.sendComplaint(filepath);
-      scoreBoard.checkIsAchivSolvedXHR('Deprecated Interface');
+      cy.checkIsAchivSolvedXHR('Deprecated Interface');
     });
 
     it('7 - Login MC SafeSearch', () => {
       const MCSafeSearchEmail = 'mc.safesearch@juice-sh.op';
       const MCSafeSearchPass = 'Mr. N00dles';
       loginPage.login(MCSafeSearchEmail, MCSafeSearchPass);
-      scoreBoard.checkIsAchivSolvedXHR('Login MC SafeSearch');
+      cy.checkIsAchivSolvedXHR('Login MC SafeSearch');
     });
 
     it('8 - Password Strength', () => {
       const adminEmail = 'admin@juice-sh.op';
       const adminPass = 'admin123';
       loginPage.login(adminEmail, adminPass);
-      scoreBoard.checkIsAchivSolvedXHR('Password Strength');
+      cy.checkIsAchivSolvedXHR('Password Strength');
     });
 
     it('9 - Password Strength', () => {
       cy.request( '/.well-known/security.txt');
-      scoreBoard.checkIsAchivSolvedXHR('Security Policy');
+      cy.checkIsAchivSolvedXHR('Security Policy');
     });
     
     it("10 - Weird Crypto", () => {
@@ -107,18 +106,18 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
           }
         });
       });
-      scoreBoard.checkIsAchivSolvedXHR('Weird Crypto');
+      cy.checkIsAchivSolvedXHR('Weird Crypto');
     });
 
     it('11 - Password Strength', () => {
       cy.request( '/.well-known/security.txt');
-      scoreBoard.checkIsAchivSolvedXHR('Security Policy');
+      cy.checkIsAchivSolvedXHR('Security Policy');
     });
 
     it.skip('12 - Reflected XSS', () => {
       //This challenge is not available on Docker!
       cy.visit('/#/track-result?id=%3Ciframe%20src%3D%22javascript:alert(%60xss%60)%22%3E')
-      scoreBoard.checkIsAchivSolvedXHR('Reflected XSS'); 
+      cy.checkIsAchivSolvedXHR('Reflected XSS'); 
     });
 
     it('13 - Visual Geo Stalking', () => {
@@ -126,7 +125,7 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
       const securityAnswer = 'ITsec';
       const emmaEmail = 'emma@juice-sh.op';
       resetPassword.resetPassword(emmaEmail, newPassword, securityAnswer)
-      scoreBoard.checkIsAchivSolvedXHR('Visual Geo Stalking'); 
+      cy.checkIsAchivSolvedXHR('Visual Geo Stalking'); 
     });
 
   });
