@@ -69,16 +69,4 @@ describe('HomePage Test Automatisation demo', () => {
         .should('be.not.visible')
     })
   })
-
-  context('HomePage - elements check', () => {
-
-    beforeEach(() => {
-      cy.visit('');
-      firstVisitPopups.closeFirstVisitMesseges()
-    });
-
-    it('Welcome page', () => {
-      
-    })
-  })
 })
