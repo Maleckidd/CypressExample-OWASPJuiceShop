@@ -33,7 +33,9 @@ const firstVisitPopups = {
    },
 
    closeFirstVisitMesseges(){
-      cy.get('body').then(($body) => {
+      cy.get('body')
+         .should('be.visible')
+         .then(($body) => {
          if ($body.find(this.welcomeDialogDismissButtonSelector).length > 0) {
             this.cookiesConfirmButton().click();
             this.welcomeDialogDismissButton().click();

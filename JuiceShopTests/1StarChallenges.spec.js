@@ -12,7 +12,6 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
 
     before(() => {
       cy.visit('/');
-      cy.wait(2000);
       firstVisitPopups.closeFirstVisitMesseges();
     });
 

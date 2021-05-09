@@ -37,7 +37,7 @@ const loginPage = {
    },
 
    login(email,password){
-      headerBar.accountButton().click();
+      headerBar.accountButton().should('be.visible').click();
       headerBar.loginButton().click();
       this.typeEmail(email)
       this.typePassword(password)
