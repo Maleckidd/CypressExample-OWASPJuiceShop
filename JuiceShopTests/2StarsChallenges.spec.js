@@ -66,12 +66,20 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
     });
 
     it('6 -  Deprecated Interface', () => {
-      const filepath = 'test1.xml'
+      const filepath = 'test1.xml';
       registrationPage.register();
       loginPage.login(registrationPage.userEmail, registrationPage.userPassword);
       sideNav.navigateToComplaint();
       complaint.sendComplaint(filepath);
       scoreBoard.checkIsAchivSolvedXHR('Deprecated Interface');
+    });
+
+    it.only('7 - Login MC SafeSearch', () => {
+      const MCSafeSearchEmail = 'mc.safesearch@juice-sh.op';
+      const MCSafeSearchPass = 'Mr. N00dles';
+      
+      loginPage.login(MCSafeSearchEmail, MCSafeSearchPass);
+      scoreBoard.checkIsAchivSolvedXHR('Login MC SafeSearch');
     });
   });
 });
