@@ -34,8 +34,6 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
 
     it.skip('3 - DOM XSS', () => {
       //Challenge solved - timeout - alert popup not possible to close
-      //Other solution
-      //cy.visit("http://localhost:3000/#/search?q=%3Ciframe%20src%3D%22javascript:alert(%60xss%60)%22%3E")
       cy.fixture('challengesPayloads.json').then(data => {
         headerBar.useSearchingTool(data.XSS);
       });

