@@ -73,10 +73,9 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
       scoreBoard.checkIsAchivSolvedXHR('Deprecated Interface');
     });
 
-    it.only('7 - Login MC SafeSearch', () => {
+    it('7 - Login MC SafeSearch', () => {
       const MCSafeSearchEmail = 'mc.safesearch@juice-sh.op';
       const MCSafeSearchPass = 'Mr. N00dles';
-      
       loginPage.login(MCSafeSearchEmail, MCSafeSearchPass);
       scoreBoard.checkIsAchivSolvedXHR('Login MC SafeSearch');
     });
