@@ -37,6 +37,7 @@ const loginPage = {
    },
 
    login(email,password){
+      cy.visit('/');
       headerBar.accountButton().should('be.visible').click();
       headerBar.loginButton().click();
       this.typeEmail(email)

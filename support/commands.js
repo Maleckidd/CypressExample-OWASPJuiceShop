@@ -27,7 +27,6 @@
 import 'cypress-file-upload';
 
 Cypress.Commands.add('checkIsAchivSolvedXHR', (challengeName) => {
-  cy.visit('/');
   cy.server();
   cy.route({ url: '/api/Challenges/?sort=name', method: 'GET' }).as('getChallenges');
   cy.visit('/#/score-board');

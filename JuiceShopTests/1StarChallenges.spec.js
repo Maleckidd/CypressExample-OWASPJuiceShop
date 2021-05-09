@@ -16,7 +16,6 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
 
     beforeEach(() => {
       Cypress.Cookies.preserveOnce('cookieconsent_status', 'welcomebanner_status', 'language');
-      cy.visit('/');
     });
 
     it('1 - visit /#/score-board', () => {
