@@ -69,8 +69,8 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
       cy.checkIsAchivSolvedXHR('Privacy Policy');
     });
 
-    it("10 - Zero Stars", () => {
-      cy.intercept('captcha/').as('captcha');
+    it.only("10 - Zero Stars", () => {
+      cy.intercept('/rest/captcha/').as('captcha');
       sideNav.navigateToCustomerFeedback();
       cy.wait('@captcha').then((captcha) => {
         cy.request({

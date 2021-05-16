@@ -91,7 +91,7 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
     });
     
     it("10 - Weird Crypto", () => {
-      cy.intercept('captcha/').as('captcha');
+      cy.intercept('/rest/captcha/').as('captcha');
       sideNav.navigateToCustomerFeedback();
       cy.wait('@captcha').then((captcha) => {
         cy.request({

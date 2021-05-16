@@ -46,7 +46,7 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
     });
 
     it('3 - CAPTCHA Bypass', () => {
-      cy.intercept('captcha/').as('captcha');
+      cy.intercept('/rest/captcha/').as('captcha');
       sideNav.navigateToCustomerFeedback();
       cy.wait('@captcha').then((captcha) => {
         for (let i = 0; i < 10; i++) {
