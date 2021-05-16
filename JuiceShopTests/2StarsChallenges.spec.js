@@ -65,7 +65,7 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
     it('6 -  Deprecated Interface', () => {
       const filepath = 'test1.xml';
       registrationPage.register();
-      loginPage.login(registrationPage.userEmail, registrationPage.userPassword);
+      loginPage.login();
       sideNav.navigateToComplaint();
       complaint.sendComplaint(filepath);
       cy.checkIsAchivSolvedXHR('Deprecated Interface');
@@ -85,7 +85,7 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
       cy.checkIsAchivSolvedXHR('Password Strength');
     });
 
-    it('9 - Password Strength', () => {
+    it('9 - Security Policy', () => {
       cy.request( '/.well-known/security.txt');
       cy.checkIsAchivSolvedXHR('Security Policy');
     });

@@ -104,7 +104,7 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
 
     it("12 - Bully Chatbot", () => {
       registrationPage.register();
-      loginPage.login(registrationPage.userEmail, registrationPage.userPassword);
+      loginPage.login();
       headerBar.sideNavButton().click();
       sideNav.supportChatButton().click();
       for (let i = 0; i < 30; i++) {

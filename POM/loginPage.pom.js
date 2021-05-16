@@ -1,4 +1,5 @@
 import headerBar from '../POM/headerBar.pom';
+import registrationPage from '../POM/registrationPage.pom';
 
 const loginPage = {
    emailInputSelector: '[id="email"]',
@@ -36,7 +37,7 @@ const loginPage = {
       return cy.get(this.serachingInputSelector)
    },
 
-   login(email,password){
+   login(email = registrationPage.userEmail, password = registrationPage.userPassword){
       cy.visit('/');
       headerBar.accountButton().should('be.visible').click();
       headerBar.loginButton().click();

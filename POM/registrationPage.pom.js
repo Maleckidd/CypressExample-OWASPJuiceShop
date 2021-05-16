@@ -52,13 +52,13 @@ const registrationPage = {
       return cy.get(this.loginLinkSelector)
    },
 
-   register(){
+   register(userEmail = this.userEmail, userPassword = this.userPassword){
       headerBar.accountButton().click();
       headerBar.loginButton().click();
       loginPage.registrationLink().click();
-      this.emailInput().type(this.userEmail);
-      this.passwordInput().type(this.userPassword);
-      this.repasswordInput().type(this.userPassword);
+      this.emailInput().type(userEmail);
+      this.passwordInput().type(userPassword);
+      this.repasswordInput().type(userPassword);
       this.secQuestionInput().click();
       this.secQuestionElementsSelect().contains('What\'s your favorite place to go hiking?').click();
       this.answerInput().type(faker.address.country());
