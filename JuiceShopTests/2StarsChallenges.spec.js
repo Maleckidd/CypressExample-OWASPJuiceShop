@@ -108,18 +108,13 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
       cy.checkIsAchivSolvedXHR('Weird Crypto');
     });
 
-    it('11 - Password Strength', () => {
-      cy.request( '/.well-known/security.txt');
-      cy.checkIsAchivSolvedXHR('Security Policy');
-    });
-
-    it.skip('12 - Reflected XSS', () => {
+    it.skip('11 - Reflected XSS', () => {
       //This challenge is not available on Docker!
       cy.visit('/#/track-result?id=%3Ciframe%20src%3D%22javascript:alert(%60xss%60)%22%3E')
       cy.checkIsAchivSolvedXHR('Reflected XSS'); 
     });
 
-    it('13 - Visual Geo Stalking', () => {
+    it('12 - Visual Geo Stalking', () => {
       const newPassword = 'newPassword123.';
       const securityAnswer = 'ITsec';
       const emmaEmail = 'emma@juice-sh.op';
