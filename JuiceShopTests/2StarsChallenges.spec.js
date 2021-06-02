@@ -91,12 +91,11 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
     });
     
     it("10 - Weird Crypto", () => {
-      cy.intercept('/rest/captcha/').as('captcha');
       sideNav.navigateToCustomerFeedback();
       cy.wait('@captcha').then((captcha) => {
         cy.request({
           method: 'POST',
-          url: 'http://localhost:3000/api/Feedbacks/',
+          url: '/api/Feedbacks/',
           body: {
             captchaId: captcha.response.body.captchaId,
             captcha: `${captcha.response.body.answer}`,

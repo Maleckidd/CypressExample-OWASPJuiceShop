@@ -23,6 +23,7 @@ const sideNav = {
    },
 
    navigateToCustomerFeedback(){
+      cy.intercept('/rest/captcha/').as('captcha');
       headerBar.sideNavButton().click();
       this.customerFeedbackButton().click();
    }

