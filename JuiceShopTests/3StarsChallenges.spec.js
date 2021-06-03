@@ -187,5 +187,12 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
       });
       cy.checkIsAchivSolvedXHR("API-only XSS");
     });
+
+    it('14 - GDPR Data Erasure', () => {
+      const newPassword = ' ';
+      const email = "chris.pike@juice-sh.op'--";
+      loginPage.login(email, newPassword);
+      cy.checkIsAchivSolvedXHR("GDPR Data Erasure");
+    });
   });
 });
