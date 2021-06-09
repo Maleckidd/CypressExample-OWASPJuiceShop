@@ -5,6 +5,9 @@ const headerBar = {
    loginButtonSelector: '[id="navbarLoginButton"]',
    sideNavButtonSelector: '[aria-label="Open Sidenav"]',
    basketButtonSelector: '[routerlink="/basket"]',
+   ordersPaymentButtonSelector: 'div > div > [aria-label="Show Orders and Payment Menu"]',
+   mySavedAddressesButtonSelector: '[routerlink="/address/saved"]',
+   backToHomePageButtonSelector: '[aria-label="Back to homepage"]',
 
    accountButton(){
       return cy.get(this.accountButtonSelector)
@@ -28,6 +31,30 @@ const headerBar = {
 
    basketButon(){
       return cy.get(this.basketButtonSelector)
+   },
+
+   ordersPaymentButton(){
+      return cy.get(this.ordersPaymentButtonSelector)
+   },
+
+   mySavedAddressesButton(){
+      return cy.get(this.mySavedAddressesButtonSelector)
+   },
+
+   backToHomePageButton(){
+      return cy.get(this.backToHomePageButtonSelector)
+   },
+
+   navigateToMySavedAddresses(){
+      this.accountButton().click();
+      this.ordersPaymentButton().trigger('mouseenter');
+      this.mySavedAddressesButton().click();
+   },
+
+   navigateToBasket(){
+      cy.intercept('GET', '/rest/basket/**').as('getBasket');
+      this.basketButon().click();
+      return cy.wait('@getBasket')
    },
 
    useSearchingTool(input){

