@@ -59,9 +59,9 @@ describe('OWASP JuiceShop Achivments unlocking Automation', () => {
       cy.checkIsAchivSolvedXHR('Exposed Metrics');
     });
 
-    it("8 - Outdated Whitelist", () => {
+    it("8 - Outdated Allowlist", () => {
       cy.request('/redirect?to=https://blockchain.info/address/1AbKfgvw9psQ41NbLi8kufDQTezwG8DRZm');
-      cy.checkIsAchivSolvedXHR('Outdated Whitelist');
+      cy.checkIsAchivSolvedXHR('Outdated Allowlist');
     });
 
     it("9 - Privacy Policy", () => {
