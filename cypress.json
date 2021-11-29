@@ -4,5 +4,6 @@
    "fixturesFolder": "fixtures",
    "pluginsFile": "plugins",
    "screenshotsFolder": "screenshots",
-   "supportFile": "support"
+   "supportFile": "support",
+   "retries": 1
 }
