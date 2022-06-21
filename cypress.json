@@ -1,9 +1,8 @@
 {
-   "baseUrl":"http://localhost:3000/",
+   "baseUrl": "http://localhost:3000/",
    "integrationFolder": "JuiceShopTests",
    "fixturesFolder": "fixtures",
    "pluginsFile": "plugins",
    "screenshotsFolder": "screenshots",
-   "supportFile": "support",
-   "retries": 1
+   "supportFile": "support"
 }
