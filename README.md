@@ -2,7 +2,7 @@
 An example project using the [Cypress][cypress] automation tool. I've included:
 
 - homePage.spec is simple script - main intend is to provide examples of common actions. 
-- challengesUnlock.spec is script to unlock all of [OWASP JuiceShop][OWASPJS] challangess - in progress
+- challengesUnlock.spec is script to unlock [OWASP JuiceShop][OWASPJS] challangess
 
 ### Setup
 Requires [Cypress][cypress] and [OWASP Juice Shop](https://github.com/bkimminich/juice-shop) to run.
