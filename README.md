@@ -28,7 +28,7 @@ The challenge wasn't "write a few tests" — it was building a suite that runs c
 | `2StarsChallenges.cy.js` | 17 | Medium-difficulty challenges |
 | `3StarsChallenges.cy.js` | 23 | Advanced attacks (XXE, IDOR, API manipulation) |
 | `homePage.cy.js` | 8 | Basic UI actions — reference material |
-| `recurseExamples.spec.cy.js` | 2 | Retry patterns with `cypress-recurse` |
+| `recurseExamples.spec .cy.js` | 2 | Retry patterns with `cypress-recurse` |
 
 **Verify over the network, not the UI.** A key decision: the custom command `cy.checkIsAchivSolvedXHR()` checks challenge status via the API response instead of relying on a UI notification. This is resilient to animations and disappearing toasts.
 
@@ -40,7 +40,6 @@ Honest about the limits — because they drove what came next:
 
 - **DOM XSS blocked at the framework level.** The test `it.skip('3 - DOM XSS')` — after firing the XSS, a native `alert()` pops up that Cypress can't dismiss, leading to a timeout. The challenge *does* get solved, but the test can't finish cleanly. Left as `skip` with a comment rather than pretending it passes.
 - **Fighting welcome and cookie popups.** Required a dedicated `FirstVisitPopups.pom` and manual cookie preservation (`Cypress.Cookies.preserveOnce`) between tests — brittle and dependent on execution order.
-- **JavaScript without types.** Across 9 POMs and dozens of payloads, the lack of types meant a typo in a method name or selector only surfaced at runtime.
 - **Single-runner architecture.** Cypress runs inside the browser's event loop — some attacks (those relying on native dialogs or multiple tabs) were hard or impossible to automate.
 
 ## 🚀 The Result: AI-Assisted Migration to Playwright
@@ -99,7 +98,7 @@ CypressExample-OWASPJuiceShop/
 ├── fixtures/           # attack payloads, env data, XML files
 ├── support/            # custom commands (checkIsAchivSolvedXHR)
 ├── plugins/            # node events config
-└── cypress.config.js   # baseUrl, specPattern, viewport
+└── cypress.config.js   # baseUrl, specPattern, supportFile
 ```
 
 ---
